@@ -6,7 +6,7 @@ from pyNN.optimization.optimization import *
 from pyNN.util.Initializer import *
 import pickle
 
-
+# hi
 class Autoencoder(object):
 
     def init(self, numpy_rng, theano_rng=None, l_rate=None, optimization = "sgd", tied = False, n_visible=400, n_hidden=200,W=None, bhid=None, bvis=None, W_prime = None, input=None, hidden_activation = "sigmoid", output_activation = "identity", loss_fn = "squarrederror", op_folder=None):
