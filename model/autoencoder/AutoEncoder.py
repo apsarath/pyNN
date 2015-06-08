@@ -56,7 +56,7 @@ class Autoencoder(Model):
         print self.get_lr_rate()
 
     def get_cost(self):
-
+        #123
         y = T.dot(self.x, self.W) + self.b
         y = activation(y, self.hidden_activation)
         z = T.dot(y, self.W_prime) + self.b_prime
