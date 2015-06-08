@@ -2,69 +2,58 @@
 
 from pyNN import *
 import time
-from pyNN.optimization.optimization import *
-from pyNN.util.Initializer import *
-import pickle
 
-# hi
-class Autoencoder(object):
+class Autoencoder(Model):
 
     def init(self, numpy_rng, theano_rng=None, l_rate=None, optimization = "sgd", tied = False, n_visible=400, n_hidden=200,W=None, bhid=None, bvis=None, W_prime = None, input=None, hidden_activation = "sigmoid", output_activation = "identity", loss_fn = "squarrederror", op_folder=None):
 
-
-        self.numpy_rng = numpy_rng
-        if not theano_rng:
-            theano_rng = RandomStreams(numpy_rng.randint(2 ** 30))
-        self.theano_rng = theano_rng
-
-        self.optimization = optimization
-        self.l_rate = l_rate
-
-        self.optimizer = get_optimizer(self.optimization, self.l_rate)
-        self.Initializer = Initializer(self.numpy_rng)
+        Model.init(self, numpy_rng, theano_rng, optimization, l_rate, op_folder)
 
         self.n_visible = n_visible
-        self.n_hidden = n_hidden
-        self.tied = tied
-        self.hidden_activation = hidden_activation
-        self.output_activation = output_activation
-        self.loss_fn = loss_fn
-        self.op_folder = op_folder
+        self.hparams["n_visible"] = self.n_visible
 
+        self.n_hidden = n_hidden
+        self.hparams["n_hidden"] = self.n_hidden
+
+        self.tied = tied
+        self.hparams["tied"] = self.tied
+
+        self.hidden_activation = hidden_activation
+        self.hparams["hidden_activation"] = self.hidden_activation
+
+        self.output_activation = output_activation
+        self.hparams["output_activation"] = self.output_activation
+
+        self.loss_fn = loss_fn
+        self.hparams["loss_fn"] = self.loss_fn
 
         if self.hidden_activation == "sigmoid":
             self.W = self.Initializer.fan_based_sigmoid("W", W, n_visible, n_hidden)
-            self.optimizer.register_variable("W",n_visible,n_hidden)
+            self.add_params("W", self.W, n_visible, n_hidden)
         else:
             self.W = self.Initializer.fan_based("W", W, n_visible, n_hidden)
-            self.optimizer.register_variable("W",n_visible,n_hidden)
+            self.add_params("W", self.W, n_visible, n_hidden)
 
         if not tied:
             self.W_prime = self.Initializer.fan_based_sigmoid("W_prime", W_prime, n_hidden, n_visible)
-            self.optimizer.register_variable("W_prime",n_hidden, n_visible)
+            self.add_params("W_prime", self.W_prime, n_hidden, n_visible)
         else:
             self.W_prime = self.W.T
 
         self.b = self.Initializer.zero_vector("b", bhid, n_hidden)
-        self.optimizer.register_variable("b",1,n_hidden)
+        self.add_params("b", self.b, 1, n_hidden)
 
         self.b_prime = self.Initializer.zero_vector("b_prime", bvis, n_visible)
-        self.optimizer.register_variable("b_prime",1,n_visible)
+        self.add_params("b_prime", self.b_prime, 1, n_visible)
 
         if input == None:
             self.x = T.dmatrix(name='input')
         else:
             self.x = input
 
-        if(tied==True):
-            self.params = [self.W,  self.b, self.b_prime]
-            self.param_names = ["W", "b", "b_prime"]
-        else:
-            self.params = [self.W, self.b, self.b_prime, self.W_prime]
-            self.param_names = ["W", "b", "b_prime", "W_prime"]
-
         self.save_params()
 
+        print self.get_lr_rate()
 
     def get_cost(self):
 
@@ -86,33 +75,6 @@ class Autoencoder(object):
             updates.append((p,p+gr))
             updates.extend(upd)
         return (cost, updates)        
-
-    def get_lr_rate(self):
-        return self.optimizer.get_l_rate()
-
-    def set_lr_rate(self,new_lr):
-        self.optimizer.set_l_rate(new_lr)
-
-    def save_matrices(self):
-
-        for p,nm in zip(self.params, self.param_names):
-            numpy.save(self.op_folder+nm, p.get_value(borrow=True))
-
-    def save_params(self):
-
-        params = {}
-        params["optimization"] = self.optimization
-        params["l_rate"] = self.l_rate
-        params["n_visible"] = self.n_visible
-        params["n_hidden"] = self.n_hidden
-        params["hidden_activation"] = self.hidden_activation
-        params["output_activation"] = self.output_activation
-        params["loss_fn"] = self.loss_fn
-        params["tied"] = self.tied
-        params["numpy_rng"] = self.numpy_rng
-        params["theano_rng"] = self.theano_rng
-
-        pickle.dump(params,open(self.op_folder+"params.pck","wb"),-1)
 
 
     def load(self, folder, input=None):
