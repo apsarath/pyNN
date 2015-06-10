@@ -3,7 +3,7 @@ __author__ = 'sanbilp'
 from pyNN import *
 
 '''
-Vanilla Elman Recurrent Network
+Vanilla Elman Recurrent Network.
 
 When sepemb = True, there will be a separate embedding matrix and separate W_in matrix. When sepemb = False, W_in acts as the embedding matrix.
 learnh0 = True means the model learn h0 (initial hidden state). Else it is set to zero vector.
