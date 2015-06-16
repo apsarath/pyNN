@@ -118,7 +118,7 @@ class ElmanNet(Model):
         self.valid = theano.function( inputs  = [self.data, self.mask],
                                       outputs = [l[-1]])
 
-"""
+"""..
 #test case
 rng = numpy.random.RandomState(123)
 theano_rng = RandomStreams(rng.randint(2 ** 30))
