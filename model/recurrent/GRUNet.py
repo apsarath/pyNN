@@ -150,7 +150,7 @@ class GRUNet(Model):
                                       outputs = [l[-1]])
 
 
-#test case
+"""#test case
 rng = numpy.random.RandomState(123)
 theano_rng = RandomStreams(rng.randint(2 ** 30))
 net = GRUNet()
@@ -162,3 +162,4 @@ b = numpy.ones((5,4),dtype="int32")
 #b[4] = 0
 print net.train(a,b)
 print net.valid(a,b)
+"""
