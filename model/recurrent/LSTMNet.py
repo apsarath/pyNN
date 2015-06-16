@@ -149,7 +149,7 @@ class LSTMNet(Model):
                                       outputs = [l[-1]])
 
 """
-#test case
+#test case..
 rng = numpy.random.RandomState(123)
 theano_rng = RandomStreams(rng.randint(2 ** 30))
 net = LSTMNet()
