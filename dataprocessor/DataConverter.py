@@ -29,7 +29,6 @@ def converter(src, tgt, ivc, srt, end):
     tfile.close()
 
 
-
 def wordtoid(folder, vfile, trainfile, validfile=None, testfile=None, cutoff_freq=0, topk=0, srt=True, end=True):
 
     file = codecs.open(folder+vfile,"r","utf-8")
