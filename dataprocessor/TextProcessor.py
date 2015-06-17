@@ -1,6 +1,7 @@
 __author__ = 'sanbilp'
 
 import codecs
+import operator
 
 from nltk.tokenize import WordPunctTokenizer
 
@@ -51,4 +52,31 @@ def TextProcessor(src, tgt, low=True, num=True):
     tgtfile.close()
     print "done processing "+str(linecount)+" lines!!"
 
-TextProcessor("../../../watson_data/input/RecAE/wiki/million-wiki.txt","../../../watson_data/input/RecAE/wiki/new-million-wiki.txt")
+"""
+This function takes a text file (src) and outputs the vocabulary of the data with frequency info in sorted order (desc)
+"""
+def get_vocabulary(src, vfile):
+
+    vocab = {}
+
+    file = codecs.open(src,"r","utf-8")
+    for line in file:
+        line = line.strip().split()
+        for word in line:
+            if word in vocab:
+                vocab[word] = vocab[word] + 1
+            else:
+                vocab[word] = 1
+    file.close()
+    sorted_vocab = sorted(vocab.items(),key=operator.itemgetter(1),reverse=True)
+
+    file = codecs.open(vfile,"w","utf-8")
+
+    for word in sorted_vocab:
+        file.write(word[0]+"\t"+str(word[1])+"\n")
+    file.close()
+
+
+#TextProcessor("../../../watson_data/input/RecAE/wiki/million-wiki.txt","../../../watson_data/input/RecAE/wiki/new-million-wiki.txt")
+
+get_vocabulary("../../../watson_data/input/RecAE/wiki/new-million-wiki-train.txt","../../../watson_data/input/RecAE/wiki/vocab.txt")
