@@ -48,5 +48,3 @@ def GenerateSeqMatTVT(folder, batch_size, dtype):
     GenerateSeqMat(folder+"svalid-seq.txt",folder+"mat_pic/valid/",batch_size,dtype)
     GenerateSeqMat(folder+"stest-seq.txt",folder+"mat_pic/test/",batch_size,dtype)
 
-
-GenerateSeqMatTVT("C:/Users/IBM_ADMIN/Data/watson_data/input/RecAE/wiki/",100,"int32")

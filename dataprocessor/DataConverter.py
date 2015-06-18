@@ -85,4 +85,3 @@ def wordtoid(folder, vfile, trainfile, validfile=None, testfile=None, cutoff_fre
 
 
 
-wordtoid("../../../watson_data/input/RecAE/wiki/","vocab.txt","new-million-wiki-train.txt","new-million-wiki-valid.txt","new-million-wiki-test.txt",topk=30000)

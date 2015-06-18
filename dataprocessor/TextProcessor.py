@@ -76,7 +76,3 @@ def get_vocabulary(src, vfile):
         file.write(word[0]+"\t"+str(word[1])+"\n")
     file.close()
 
-
-#TextProcessor("../../../watson_data/input/RecAE/wiki/million-wiki.txt","../../../watson_data/input/RecAE/wiki/new-million-wiki.txt")
-
-get_vocabulary("../../../watson_data/input/RecAE/wiki/new-million-wiki-train.txt","../../../watson_data/input/RecAE/wiki/vocab.txt")

@@ -51,5 +51,3 @@ def DataSplitter(src, traincount, validcount, testcount):
     validfile.close()
     testfile.close()
 
-
-DataSplitter("../../../watson_data/input/RecAE/wiki/new-million-wiki.txt",95,2,3)
